@@ -7,8 +7,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { font-family: Arial, Helvetica, sans-serif; }
-    .card-shadow { box-shadow: 0 15px 35px rgba(0,0,0,0.12); }
-    .soft-shadow { box-shadow: 0 8px 20px rgba(0,0,0,0.10); }
     .hidden-screen { display: none; }
     .popup {
       position: fixed;
@@ -21,13 +19,13 @@
       color: white;
       font-weight: 700;
       box-shadow: 0 15px 30px rgba(0,0,0,0.18);
-      animation: bounceIn 0.5s ease;
+      animation: bounceIn 0.45s ease;
     }
     .popup.success { background: linear-gradient(90deg, #22c55e, #10b981); }
     .popup.error { background: linear-gradient(90deg, #f43f5e, #ef4444); }
     @keyframes bounceIn {
-      0% { transform: translateX(-50%) scale(0.8); opacity: 0; }
-      60% { transform: translateX(-50%) scale(1.05); opacity: 1; }
+      0% { transform: translateX(-50%) scale(0.85); opacity: 0; }
+      60% { transform: translateX(-50%) scale(1.04); opacity: 1; }
       100% { transform: translateX(-50%) scale(1); }
     }
     .line-divider {
@@ -44,7 +42,19 @@
     }
     .chip-detail { display: none; }
     .chip-detail.open { display: block; }
-    .dragging { opacity: 0.6; }
+    .dragging { opacity: 0.65; }
+    .floaty { animation: floaty 3.5s ease-in-out infinite; }
+    .floaty2 { animation: floaty 4.2s ease-in-out infinite; }
+    .floaty3 { animation: floaty 5s ease-in-out infinite; }
+    .sparkle { animation: sparkle 2.8s ease-in-out infinite; }
+    @keyframes floaty {
+      0%,100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(2deg); }
+    }
+    @keyframes sparkle {
+      0%,100% { opacity: 0.55; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.08); }
+    }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-r from-purple-200 via-pink-200 to-yellow-200 p-4 md:p-6">
@@ -57,14 +67,18 @@
       <div class="absolute bottom-8 left-16 h-20 w-20 rounded-full bg-sky-300/60 blur-2xl"></div>
       <div class="absolute bottom-10 right-16 h-24 w-24 rounded-full bg-green-300/50 blur-2xl"></div>
 
-      <div class="absolute left-6 top-6 rotate-[-8deg] rounded-2xl bg-white/80 px-4 py-2 text-2xl shadow">📊</div>
-      <div class="absolute right-8 top-24 rotate-[10deg] rounded-2xl bg-white/80 px-4 py-2 text-2xl shadow">🎯</div>
-      <div class="absolute bottom-24 left-10 rotate-[8deg] rounded-2xl bg-white/80 px-4 py-2 text-2xl shadow">📘</div>
-      <div class="absolute bottom-10 right-10 rotate-[-10deg] rounded-2xl bg-white/80 px-4 py-2 text-2xl shadow">🏆</div>
+      <div class="absolute left-6 top-6 floaty rotate-[-8deg] rounded-2xl bg-white/80 px-4 py-2 text-2xl shadow">📊</div>
+      <div class="absolute right-8 top-24 floaty2 rotate-[10deg] rounded-2xl bg-white/80 px-4 py-2 text-2xl shadow">🎯</div>
+      <div class="absolute bottom-24 left-10 floaty3 rotate-[8deg] rounded-2xl bg-white/80 px-4 py-2 text-2xl shadow">📘</div>
+      <div class="absolute bottom-10 right-10 sparkle rotate-[-10deg] rounded-2xl bg-white/80 px-4 py-2 text-2xl shadow">🏆</div>
+
+      <div class="absolute right-6 top-6 z-20">
+        <button id="btn-music" class="rounded-full bg-white/90 px-4 py-2 text-sm font-bold text-slate-700 shadow-lg">🎵 Musik: Off</button>
+      </div>
 
       <div class="relative text-center">
         <div class="mx-auto inline-flex rounded-full bg-gradient-to-r from-yellow-200 via-pink-200 to-sky-200 px-6 py-3 shadow-lg">
-          <h1 class="text-3xl font-black tracking-wide text-slate-800 md:text-5xl">SIMULASI STATISTIKA INTERAKTIF</h1>
+          <h1 class="text-3xl font-black tracking-wide text-slate-800 md:text-5xl">STATISTIKA INTERAKTIF</h1>
         </div>
         <p class="mt-4 text-lg font-bold text-slate-700 md:text-2xl">Pahami Data, Bukan Hafal Rumus!</p>
         <p class="mx-auto mt-3 max-w-2xl text-sm text-slate-600 md:text-base">Belajar modus dan kuartil dengan visual, animasi, simulasi, dan tantangan yang lebih seru.</p>
@@ -80,7 +94,7 @@
           <div class="flex items-center gap-4">
             <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-3xl shadow-lg">▶</div>
             <div>
-              <div class="text-2xl font-black">Mulai Simulasi</div>
+              <div class="text-2xl font-black">Mulai Game Pembelajaran</div>
               <div class="mt-1 text-sm font-semibold text-slate-700">Masuk ke misi modus dan kuartil</div>
             </div>
           </div>
@@ -115,26 +129,49 @@
           <p class="font-bold text-slate-800">Modus</p>
           <p>Modus adalah nilai yang paling sering muncul dalam data.</p>
           <p class="mt-2 font-bold text-slate-800">Rumus modus data berkelompok</p>
-          <div class="mt-2 rounded-xl bg-slate-100 p-4 font-bold leading-relaxed text-slate-800">
-            <div>Mo = Tb</div>
-            <div>+ (d1 / (d1 + d2))</div>
-            <div>× p</div>
+          <div class="mt-2 rounded-xl bg-slate-100 p-4 text-slate-800 shadow-inner">
+            <div class="text-center text-xl font-serif italic">Mo = b + <span class="inline-block align-middle text-center"><span class="border-b-2 border-slate-700 px-2">b₁</span><br><span class="px-2">b₁ + b₂</span></span> p</div>
           </div>
           <div class="mt-3 space-y-1">
-            <p><b>Mo</b> = nilai modus</p>
-            <p><b>Tb</b> = tepi bawah kelas modus</p>
-            <p><b>d1</b> = selisih frekuensi ke kiri</p>
-            <p><b>d2</b> = selisih frekuensi ke kanan</p>
-            <p><b>p</b> = panjang kelas</p>
+            <p><b>Mo</b> = modus</p>
+            <p><b>b</b> = batas bawah atau tepi bawah kelas modus</p>
+            <p><b>p</b> = panjang kelas interval</p>
+            <p><b>b₁</b> = frekuensi kelas modus dikurangi frekuensi kelas sebelumnya</p>
+            <p><b>b₂</b> = frekuensi kelas modus dikurangi frekuensi kelas sesudahnya</p>
+          </div>
+          <div class="mt-3 rounded-xl bg-yellow-50 p-4 text-slate-700 leading-relaxed">
+            <p><b>Penjelasan konsep:</b></p>
+            <p>Rumus modus dipakai pada data berkelompok karena kita belum tahu nilai yang paling sering muncul secara tepat. Yang kita ketahui lebih dulu adalah kelas dengan frekuensi paling tinggi.</p>
+            <p>Kita mulai dari tepi bawah kelas modus, lalu bergerak ke dalam kelas itu. Besar geraknya ditentukan oleh perbandingan selisih frekuensi di kiri dan kanan kelas modus.</p>
+            <p><b>Cara mendapat selisih kiri:</b> ambil frekuensi kelas modus, lalu kurangi frekuensi kelas sebelumnya. Contoh, jika frekuensi kelas modus 12 dan kelas sebelumnya 8, maka selisih kiri = 12 - 8 = 4.</p>
+            <p><b>Cara mendapat selisih kanan:</b> ambil frekuensi kelas modus, lalu kurangi frekuensi kelas sesudahnya. Contoh, jika frekuensi kelas modus 12 dan kelas sesudahnya 9, maka selisih kanan = 12 - 9 = 3.</p>
+            <p>Jika selisih kiri lebih besar, artinya kenaikan ke puncak lebih tajam dari sisi kiri. Jika selisih kanan lebih besar, artinya penurunan setelah puncak lebih tajam di sisi kanan.</p>
           </div>
         </div>
         <div>
           <p class="font-bold text-slate-800">Kuartil</p>
-          <p>Kuartil membagi data menjadi empat bagian sama banyak.</p>
-          <div class="mt-2 rounded-xl bg-slate-100 p-4 leading-relaxed text-slate-800">
+          <p>Kuartil membagi data yang sudah diurutkan menjadi empat bagian sama banyak.</p>
+          <div class="mt-2 rounded-xl bg-slate-100 p-4 leading-relaxed text-slate-800 shadow-inner">
             <div><b>Q1</b> = nilai tengah bagian bawah</div>
             <div><b>Q2</b> = median atau nilai tengah seluruh data</div>
             <div><b>Q3</b> = nilai tengah bagian atas</div>
+          </div>
+          <div class="mt-3 rounded-xl bg-white p-4 text-slate-800 shadow-inner">
+            <p class="font-bold">Rumus posisi kuartil</p>
+            <div class="mt-2 space-y-1 font-semibold text-center">
+              <div class="text-lg font-serif">Letak Q<sub>i</sub> = <span style="display:inline-block; vertical-align:middle; text-align:center;"><span style="border-bottom:2px solid black; padding:0 6px;">i (n + 1)</span><br><span>4</span></span></div>
+              <div>Posisi Q1 = 1/4 × (n + 1)</div>
+              <div>Posisi Q2 = 2/4 × (n + 1)</div>
+              <div>Posisi Q3 = 3/4 × (n + 1)</div>
+            </div>
+            <p class="mt-3 text-sm">n adalah banyak data. Rumus posisi ini membantu melihat letak kuartil pada data yang sudah diurutkan.</p>
+          </div>
+          <div class="mt-3 rounded-xl bg-blue-50 p-4 text-slate-700 leading-relaxed">
+            <p><b>Penjelasan konsep:</b></p>
+            <p>Karena data dibagi menjadi empat bagian sama banyak, posisi kuartil bisa dipahami sebagai seperempat, setengah, dan tiga perempat bagian data.</p>
+            <p><b>Jika jumlah data ganjil,</b> biasanya Q2 adalah satu nilai tepat di tengah. Setelah itu, data di bawah Q2 dipakai untuk mencari Q1, dan data di atas Q2 dipakai untuk mencari Q3.</p>
+            <p><b>Jika jumlah data genap,</b> Q2 didapat dari rata-rata dua nilai tengah. Setelah itu, bagian bawah dan bagian atas dicari nilai tengahnya lagi untuk mendapatkan Q1 dan Q3.</p>
+            <p>Jadi, hasil Q1, Q2, dan Q3 bisa berasal dari satu nilai tengah atau dari rata-rata dua nilai, tergantung banyak datanya ganjil atau genap.</p>
           </div>
         </div>
       </div>
@@ -169,6 +206,11 @@
       dragIndex: null
     };
 
+    let musicCtx = null;
+    let musicNodes = [];
+    let musicLoopId = null;
+    let musicOn = false;
+
     function showScreen(name) {
       Object.values(screens).forEach(el => el.classList.add('hidden-screen'));
       screens[name].classList.remove('hidden-screen');
@@ -177,7 +219,7 @@
     function showPopup(type, text) {
       const root = document.getElementById('popup-root');
       root.innerHTML = `<div class="popup ${type}">${text}</div>`;
-      setTimeout(() => root.innerHTML = '', 900);
+      setTimeout(() => { root.innerHTML = ''; }, 900);
     }
 
     function playTone(type = 'success') {
@@ -189,6 +231,7 @@
         const gainNode = ctx.createGain();
         oscillator.connect(gainNode);
         gainNode.connect(ctx.destination);
+
         if (type === 'success') {
           oscillator.frequency.setValueAtTime(523.25, ctx.currentTime);
           oscillator.frequency.setValueAtTime(659.25, ctx.currentTime + 0.12);
@@ -197,7 +240,7 @@
           gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.28);
           oscillator.start(ctx.currentTime);
           oscillator.stop(ctx.currentTime + 0.3);
-        } else {
+        } else if (type === 'error') {
           oscillator.type = 'sawtooth';
           oscillator.frequency.setValueAtTime(220, ctx.currentTime);
           oscillator.frequency.setValueAtTime(170, ctx.currentTime + 0.14);
@@ -206,6 +249,86 @@
           gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
           oscillator.start(ctx.currentTime);
           oscillator.stop(ctx.currentTime + 0.22);
+        } else if (type === 'click') {
+          oscillator.type = 'triangle';
+          oscillator.frequency.setValueAtTime(420, ctx.currentTime);
+          oscillator.frequency.setValueAtTime(520, ctx.currentTime + 0.05);
+          gainNode.gain.setValueAtTime(0.001, ctx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + 0.01);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.09);
+          oscillator.start(ctx.currentTime);
+          oscillator.stop(ctx.currentTime + 0.1);
+        } else if (type === 'swap') {
+          oscillator.type = 'square';
+          oscillator.frequency.setValueAtTime(300, ctx.currentTime);
+          oscillator.frequency.setValueAtTime(380, ctx.currentTime + 0.04);
+          oscillator.frequency.setValueAtTime(460, ctx.currentTime + 0.08);
+          gainNode.gain.setValueAtTime(0.001, ctx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.07, ctx.currentTime + 0.01);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+          oscillator.start(ctx.currentTime);
+          oscillator.stop(ctx.currentTime + 0.13);
+        }
+      } catch (e) {}
+    }
+
+    function stopMusic() {
+      if (musicLoopId) {
+        clearInterval(musicLoopId);
+        musicLoopId = null;
+      }
+      musicNodes.forEach((n) => { try { n.stop(); } catch (e) {} });
+      musicNodes = [];
+      if (musicCtx) {
+        try { musicCtx.close(); } catch (e) {}
+      }
+      musicCtx = null;
+      musicOn = false;
+      const btn = document.getElementById('btn-music');
+      if (btn) btn.textContent = '🎵 Musik: Off';
+    }
+
+    function playMelodyNote(freq, duration, type = 'triangle', volume = 0.01) {
+      if (!musicCtx) return;
+      const osc = musicCtx.createOscillator();
+      const gain = musicCtx.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.0001, musicCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(volume, musicCtx.currentTime + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, musicCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(musicCtx.destination);
+      osc.start();
+      osc.stop(musicCtx.currentTime + duration + 0.03);
+      musicNodes.push(osc);
+      if (musicNodes.length > 24) musicNodes.shift();
+    }
+
+    function startHappyMusic() {
+      const melody = [523.25, 659.25, 783.99, 659.25, 698.46, 783.99, 880.0, 783.99];
+      let idx = 0;
+      playMelodyNote(melody[idx], 0.22, 'triangle', 0.008);
+      idx += 1;
+      musicLoopId = setInterval(() => {
+        if (!musicOn || !musicCtx) return;
+        playMelodyNote(melody[idx % melody.length], 0.22, idx % 2 === 0 ? 'triangle' : 'sine', 0.008);
+        idx += 1;
+      }, 300);
+    }
+
+    function toggleMusic() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const btn = document.getElementById('btn-music');
+        if (!musicOn) {
+          musicCtx = new AudioCtx();
+          musicOn = true;
+          if (btn) btn.textContent = '🎵 Musik: On';
+          startHappyMusic();
+        } else {
+          stopMusic();
         }
       } catch (e) {}
     }
@@ -267,7 +390,7 @@
     function chipHtml(title, value, color, explanation, id) {
       return `
         <div class="space-y-2">
-          <button onclick="toggleChip('${id}')" class="w-full rounded-2xl px-4 py-3 text-left text-sm font-bold text-white shadow ${color}">
+          <button onclick="playTone('click'); toggleChip('${id}')" class="w-full rounded-2xl px-4 py-3 text-left text-sm font-bold text-white shadow ${color}">
             <div class="text-xs opacity-90">${title}</div>
             <div class="mt-1 text-lg">${value}</div>
           </button>
@@ -277,7 +400,13 @@
     }
 
     window.toggleChip = function(id) {
-      document.getElementById(id).classList.toggle('open');
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('open');
+    };
+
+    window.toggleQuartileFormula = function() {
+      const box = document.getElementById('quartile-formula-box');
+      if (box) box.classList.toggle('open');
     };
 
     function renderModeGame() {
@@ -313,7 +442,6 @@
               `).join('')}
             </div>
           </div>
-
           <div class="rounded-[1.5rem] bg-white/80 p-4 shadow-inner">
             ${state.modeStep === 0 ? `
               <div class="space-y-3 text-sm text-slate-700">
@@ -328,18 +456,16 @@
                   <p class="font-bold">Kelas modus ditemukan</p>
                   <p>Kelas modus adalah <b>${details.modalClass.lower}–${details.modalClass.upper}</b> karena frekuensinya paling besar, yaitu <b>${details.modalClass.freq}</b>.</p>
                 </div>
-
                 ${state.modeStep === 1 ? `
-                  <button onclick="showModeFormula()" class="w-full rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 px-4 py-3 font-bold text-white shadow-lg transition hover:scale-[1.02]">Lihat Animasi Rumus Modus</button>
+                  <button onclick="playTone('click'); showModeFormula()" class="w-full rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 px-4 py-3 font-bold text-white shadow-lg transition hover:scale-[1.02]">Lihat Animasi Rumus Modus</button>
                 ` : `
                   <div class="space-y-4">
                     <div class="grid gap-3 sm:grid-cols-2">
                       ${chipHtml('Tepi bawah kelas modus', details.lowerBoundary, 'bg-gradient-to-r from-purple-500 to-fuchsia-500', 'Tepi bawah adalah batas sebenarnya dari kelas. Kita kurangi 0,5 supaya tidak ada jarak antar kelas.', 'chip1')}
                       ${chipHtml('Panjang kelas', details.classWidth, 'bg-gradient-to-r from-sky-500 to-blue-500', 'Panjang kelas adalah lebar interval, misalnya dari 30 sampai 34 berarti panjang kelasnya 5.', 'chip2')}
-                      ${chipHtml('Selisih frekuensi ke kiri', details.leftDifference, 'bg-gradient-to-r from-amber-500 to-orange-500', 'Selisih kiri didapat dari frekuensi kelas modus dikurangi frekuensi kelas sebelumnya. Ini menunjukkan kenaikan menuju puncak modus.', 'chip3')}
-                      ${chipHtml('Selisih frekuensi ke kanan', details.rightDifference, 'bg-gradient-to-r from-emerald-500 to-green-500', 'Selisih kanan didapat dari frekuensi kelas modus dikurangi frekuensi kelas setelahnya. Ini menunjukkan penurunan setelah puncak modus.', 'chip4')}
+                      ${chipHtml('Selisih frekuensi ke kiri', details.leftDifference, 'bg-gradient-to-r from-amber-500 to-orange-500', 'Selisih kiri didapat dari frekuensi kelas modus dikurangi frekuensi kelas sebelumnya. Contoh, jika frekuensi kelas modus 12 dan kelas sebelumnya 8, maka selisih kiri = 12 - 8 = 4. Ini menunjukkan kenaikan menuju puncak modus.', 'chip3')}
+                      ${chipHtml('Selisih frekuensi ke kanan', details.rightDifference, 'bg-gradient-to-r from-emerald-500 to-green-500', 'Selisih kanan didapat dari frekuensi kelas modus dikurangi frekuensi kelas sesudahnya. Contoh, jika frekuensi kelas modus 12 dan kelas sesudahnya 9, maka selisih kanan = 12 - 9 = 3. Ini menunjukkan penurunan setelah puncak modus.', 'chip4')}
                     </div>
-
                     <div class="rounded-3xl border-2 border-dashed border-slate-300 bg-slate-50 p-4">
                       <p class="text-sm font-bold text-slate-800">Animasi ide rumus</p>
                       <div class="mt-3 space-y-3 text-sm text-slate-700">
@@ -368,21 +494,18 @@
                         </div>
                         <div class="rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-pink-500 p-4 text-white shadow-lg">
                           <div class="text-xs font-bold">Rumus lengkap</div>
-                          <div class="mt-2 font-black leading-relaxed">
-                            Mo = Tb <br>
-                            + (d1 / (d1 + d2)) <br>
-                            × p
+                          <div class="mt-3 rounded-xl bg-white/15 p-3 text-center font-serif italic leading-relaxed">
+                            <div class="text-2xl">Mo = b + <span class="inline-block align-middle text-center"><span class="border-b-2 border-white px-2">b₁</span><br><span class="px-2">b₁ + b₂</span></span> p</div>
                           </div>
-                          <div class="mt-2 text-xs">Tb = tepi bawah kelas modus, d1 = selisih kiri, d2 = selisih kanan, p = panjang kelas</div>
+                          <div class="mt-2 text-xs">b = tepi bawah kelas modus, b₁ = selisih kiri, b₂ = selisih kanan, p = panjang kelas</div>
                         </div>
                       </div>
                     </div>
-
                     ${state.modeStep === 2 ? `
                       <div class="rounded-3xl bg-white p-4 shadow">
                         <p class="text-sm font-bold text-slate-800">Sekarang pilih nilai modus yang benar</p>
                         <div class="mt-3 grid gap-3 sm:grid-cols-3">
-                          ${options.map((value) => `<button onclick="chooseModeValue(${value})" class="rounded-2xl bg-gradient-to-r from-pink-500 to-orange-400 px-4 py-4 text-lg font-black text-white shadow-lg transition hover:scale-105">${value.toFixed(1)}</button>`).join('')}
+                          ${options.map((value) => `<button onclick="playTone('click'); chooseModeValue(${value})" class="rounded-2xl bg-gradient-to-r from-pink-500 to-orange-400 px-4 py-4 text-lg font-black text-white shadow-lg transition hover:scale-105">${value.toFixed(1)}</button>`).join('')}
                         </div>
                       </div>
                     ` : `
@@ -400,6 +523,59 @@
       `;
     }
 
+    function attachQuartileCardEvents(root) {
+      const cards = root.querySelectorAll('.quartile-card');
+      cards.forEach((card) => {
+        card.addEventListener('dragstart', () => {
+          if (state.quartileCompleted) return;
+          state.dragIndex = Number(card.dataset.index);
+          card.classList.add('dragging');
+        });
+
+        card.addEventListener('dragend', () => {
+          card.classList.remove('dragging');
+        });
+
+        card.addEventListener('dragover', (e) => {
+          e.preventDefault();
+        });
+
+        card.addEventListener('drop', () => {
+          if (state.dragIndex === null || state.quartileCompleted) return;
+          const dropIndex = Number(card.dataset.index);
+          const newData = [...state.quartileQuestion];
+          [newData[state.dragIndex], newData[dropIndex]] = [newData[dropIndex], newData[state.dragIndex]];
+          state.quartileQuestion = newData;
+          state.dragIndex = null;
+          playTone('swap');
+          renderQuartileGame();
+        });
+
+        card.addEventListener('touchstart', () => {
+          if (state.quartileCompleted) return;
+          state.dragIndex = Number(card.dataset.index);
+          card.classList.add('dragging');
+        }, { passive: true });
+
+        card.addEventListener('touchend', (e) => {
+          card.classList.remove('dragging');
+          const touch = e.changedTouches[0];
+          const target = document.elementFromPoint(touch.clientX, touch.clientY);
+          if (!target) return;
+          const dropCard = target.closest('.quartile-card');
+          if (!dropCard) return;
+          const dropIndex = Number(dropCard.dataset.index);
+          if (state.dragIndex === null || state.quartileCompleted) return;
+          const newData = [...state.quartileQuestion];
+          [newData[state.dragIndex], newData[dropIndex]] = [newData[dropIndex], newData[state.dragIndex]];
+          state.quartileQuestion = newData;
+          state.dragIndex = null;
+          playTone('swap');
+          renderQuartileGame();
+        });
+      });
+    }
+
     function renderQuartileGame() {
       const root = document.getElementById('quartile-game');
       if (!state.quartileQuestion) state.quartileQuestion = generateQuartileQ();
@@ -415,10 +591,9 @@
           </div>
           <div class="rounded-2xl bg-white px-4 py-3 text-sm font-bold text-slate-700 shadow">Misi 2</div>
         </div>
-
         <div class="mt-5 rounded-[1.75rem] bg-white/80 p-4 shadow-inner">
           <p class="mb-3 text-sm font-bold text-slate-700">Susun kartu angka</p>
-          <div id="quartile-cards" class="flex flex-wrap gap-3">
+          <div class="flex flex-wrap gap-3">
             ${data.map((num, index) => `
               <div draggable="${!state.quartileCompleted}" data-index="${index}" class="quartile-card rounded-2xl px-4 py-3 text-lg font-black shadow-lg transition ${state.quartileCompleted ? 'bg-gradient-to-r from-emerald-400 to-green-500 text-white' : 'cursor-move bg-gradient-to-r from-fuchsia-400 to-pink-400 text-white hover:-translate-y-1'}">
                 ${num}
@@ -427,14 +602,12 @@
           </div>
           ${!state.quartileCompleted ? `<button id="btn-check-quartile" class="mt-4 w-full rounded-2xl bg-gradient-to-r from-green-500 to-emerald-500 px-4 py-3 font-bold text-white shadow-lg transition hover:scale-[1.02]">Cek Jawaban</button>` : ''}
         </div>
-
         ${state.quartileStep >= 1 ? `
           <div class="mt-5 rounded-2xl bg-green-100 p-4 text-green-800 shadow">
             <p class="font-bold">Bagus! Datanya sudah urut.</p>
             <p class="mt-1 text-sm">Sekarang lihat bagaimana kuartil membagi data menjadi empat bagian yang sama banyak.</p>
           </div>
         ` : ''}
-
         ${state.quartileStep >= 2 ? `
           <div class="mt-5 space-y-4">
             <div class="rounded-[1.75rem] border-2 border-dashed border-slate-300 bg-slate-50 p-4">
@@ -442,7 +615,7 @@
               <div class="relative mt-6 rounded-3xl bg-white p-6 shadow-inner">
                 <div class="absolute left-6 right-6 top-1/2 h-1 -translate-y-1/2 rounded-full bg-slate-300"></div>
                 <div class="relative grid grid-cols-10 gap-2">
-                  ${sorted.map(num => `
+                  ${sorted.map((num) => `
                     <div class="flex flex-col items-center">
                       <div class="z-10 rounded-2xl bg-gradient-to-r from-fuchsia-400 to-pink-400 px-2 py-3 text-center text-sm font-black text-white shadow">${num}</div>
                     </div>
@@ -459,38 +632,34 @@
               </div>
             </div>
             ${state.quartileStep >= 5 ? `
-              <div class="rounded-2xl bg-white p-4 shadow">
+              <div class="rounded-2xl bg-white p-4 shadow space-y-3">
                 <p class="font-bold text-slate-800">Apa yang terjadi?</p>
-                <p class="mt-2 text-sm leading-6 text-slate-700">Data dibagi menjadi 4 bagian sama banyak. Kuartil pertama ada di bagian bawah, kuartil kedua adalah median, dan kuartil ketiga ada di bagian atas.</p>
+                <p class="text-sm leading-6 text-slate-700">Data dibagi menjadi 4 bagian sama banyak. Kuartil pertama ada di bagian bawah, kuartil kedua adalah median, dan kuartil ketiga ada di bagian atas.</p>
+                <button onclick="playTone('click'); toggleQuartileFormula()" class="rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 px-4 py-2 text-sm font-bold text-white shadow">Lihat Penjelasan Rumus Kuartil</button>
+                <div id="quartile-formula-box" class="chip-detail rounded-xl bg-slate-50 p-4 text-sm text-slate-700 shadow">
+                  <p class="font-bold text-slate-800">Kenapa kuartil bisa dihitung seperti itu?</p>
+                  <p class="mt-2">Kuartil dapat dipahami dengan rumus posisi karena data dibagi menjadi 4 bagian sama banyak.</p>
+                  <div class="mt-3 rounded-xl bg-white p-3 font-bold leading-relaxed text-slate-800">
+                    <div>Posisi Q1 = 1/4 × (n + 1)</div>
+                    <div>Posisi Q2 = 2/4 × (n + 1)</div>
+                    <div>Posisi Q3 = 3/4 × (n + 1)</div>
+                  </div>
+                  <p class="mt-3"><b>Jika banyak data ganjil,</b> biasanya ada satu nilai yang tepat di tengah sebagai Q2. Sesudah itu, bagian bawah dan bagian atas dicari titik tengahnya lagi.</p>
+                  <p class="mt-2"><b>Jika banyak data genap,</b> Q2 biasanya diperoleh dari rata-rata dua nilai tengah. Lalu bagian bawah dan atas juga bisa menghasilkan satu nilai tengah atau rata-rata dua nilai.</p>
+                  <p class="mt-2">Jadi, penjelasan visual dengan garis pembagi dan penjelasan rumus posisi saling mendukung. Visual membantu melihat konsepnya, sedangkan rumus membantu memastikan letaknya.</p>
+                </div>
               </div>
             ` : ''}
           </div>
         ` : ''}
       `;
 
-      const cards = root.querySelectorAll('.quartile-card');
-      cards.forEach(card => {
-        card.addEventListener('dragstart', e => {
-          if (state.quartileCompleted) return;
-          state.dragIndex = Number(card.dataset.index);
-          card.classList.add('dragging');
-        });
-        card.addEventListener('dragend', () => card.classList.remove('dragging'));
-        card.addEventListener('dragover', e => e.preventDefault());
-        card.addEventListener('drop', () => {
-          if (state.dragIndex === null || state.quartileCompleted) return;
-          const dropIndex = Number(card.dataset.index);
-          const newData = [...state.quartileQuestion];
-          [newData[state.dragIndex], newData[dropIndex]] = [newData[dropIndex], newData[state.dragIndex]];
-          state.quartileQuestion = newData;
-          state.dragIndex = null;
-          renderQuartileGame();
-        });
-      });
+      attachQuartileCardEvents(root);
 
       const checkBtn = document.getElementById('btn-check-quartile');
       if (checkBtn) {
         checkBtn.addEventListener('click', () => {
+          playTone('click');
           if (JSON.stringify(state.quartileQuestion) === JSON.stringify(sortNumbers(state.quartileQuestion))) {
             state.quartileCompleted = true;
             state.quartileStep = 1;
@@ -519,7 +688,6 @@
         <div class="rounded-[2rem] bg-white/85 p-6 shadow-2xl">
           <h2 class="text-2xl font-black text-slate-800">Tantangan</h2>
           <p class="mt-2 text-sm text-slate-700">Kerjakan soal baru dari dua materi berikut.</p>
-
           <div class="mt-5 space-y-5">
             <div class="rounded-2xl bg-white p-4 shadow">
               <p class="font-bold text-slate-800">Soal 1: Modus data berkelompok</p>
@@ -532,7 +700,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    ${state.challenge.modeQuestion.data.map(row => `
+                    ${state.challenge.modeQuestion.data.map((row) => `
                       <tr class="border-t border-slate-200 bg-white">
                         <td class="px-4 py-3">${row.lower}–${row.upper}</td>
                         <td class="px-4 py-3 font-semibold">${row.freq}</td>
@@ -546,7 +714,6 @@
                 <input id="quiz-mode" class="w-full rounded-xl border border-slate-300 px-3 py-2" placeholder="Masukkan nilai modus">
               </div>
             </div>
-
             <div class="rounded-2xl bg-white p-4 shadow">
               <p class="font-bold text-slate-800">Soal 2: Kuartil data tunggal</p>
               <p class="mt-1 text-sm text-slate-700">Urutkan data berikut secara mental atau di kertas, lalu tentukan Q1, Q2, dan Q3.</p>
@@ -558,25 +725,26 @@
               </div>
             </div>
           </div>
-
           <button id="btn-check-quiz" class="mt-4 w-full rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-3 font-bold text-white shadow-lg transition hover:scale-[1.02]">Cek Hasil Tantangan</button>
           <div id="quiz-result"></div>
           <button class="btn-back mt-5 rounded-xl bg-slate-700 px-4 py-2 text-white">Kembali</button>
         </div>
       `;
 
-      root.querySelector('.btn-back').addEventListener('click', () => showScreen('menu'));
-      document.getElementById('btn-check-quiz').addEventListener('click', () => {
+      const backBtn = root.querySelector('.btn-back');
+      if (backBtn) backBtn.addEventListener('click', () => { playTone('click'); showScreen('menu'); });
+
+      const checkBtn = document.getElementById('btn-check-quiz');
+      checkBtn.addEventListener('click', () => {
+        playTone('click');
         const modeAns = Number(document.getElementById('quiz-mode').value);
         const q1Ans = Number(document.getElementById('quiz-q1').value);
         const q2Ans = Number(document.getElementById('quiz-q2').value);
         const q3Ans = Number(document.getElementById('quiz-q3').value);
-
         const modeOk = Math.abs(modeAns - Number(mode.modeValue.toFixed(1))) < 0.2;
         const q1Ok = q1Ans === quartile.q1;
         const q2Ok = q2Ans === quartile.q2;
         const q3Ok = q3Ans === quartile.q3;
-
         const result = document.getElementById('quiz-result');
         if (modeOk && q1Ok && q2Ok && q3Ok) {
           result.innerHTML = '<p class="mt-3 font-bold text-green-700">Benar! Kamu berhasil menyelesaikan soal baru dari dua misi.</p>';
@@ -636,6 +804,7 @@
     };
 
     document.getElementById('btn-start').addEventListener('click', () => {
+      playTone('click');
       state.modeQuestion = generateModeQ();
       state.modeStep = 0;
       state.modePicked = null;
@@ -646,15 +815,30 @@
       showScreen('game');
     });
 
-    document.getElementById('btn-materi').addEventListener('click', () => showScreen('materi'));
+    document.getElementById('btn-materi').addEventListener('click', () => {
+      playTone('click');
+      showScreen('materi');
+    });
+
     document.getElementById('btn-quiz').addEventListener('click', () => {
+      playTone('click');
       state.challenge = generateFinalAssessment();
       renderQuiz();
       showScreen('quiz');
     });
 
-    document.querySelectorAll('.btn-back').forEach(btn => {
-      btn.addEventListener('click', () => showScreen('menu'));
+    document.querySelectorAll('.btn-back').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        playTone('click');
+        showScreen('menu');
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (e.target && e.target.id === 'btn-music') {
+        playTone('click');
+        toggleMusic();
+      }
     });
   </script>
 </body>
