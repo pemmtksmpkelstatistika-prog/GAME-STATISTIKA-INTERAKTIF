@@ -3,11 +3,79 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Statistika Interaktif</title>
+  <title>Statistika Interaktif: Materi Modus dan Kuartil</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    @keyframes dropLine {
+      0% { transform: translateY(-40px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes fadePop {
+      0% { opacity: 0; transform: translateY(-10px) scale(0.9); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .drop-anim {
+      animation: dropLine 0.65s ease forwards;
+    }
+
+    .fade-pop {
+      animation: fadePop 0.55s ease forwards;
+    }
+
+
+    @keyframes growDown {
+      0% { height: 0; opacity: 0; }
+      100% { height: 86%; opacity: 1; }
+    }
+
+    @keyframes badgeBounce {
+      0% { opacity: 0; transform: translate(-50%, -14px) scale(0.75); }
+      60% { opacity: 1; transform: translate(-50%, 4px) scale(1.08); }
+      100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+    }
+
+    @keyframes softPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12); }
+      50% { transform: scale(1.08); box-shadow: 0 16px 30px rgba(15, 23, 42, 0.22); }
+    }
+
+    @keyframes slideGlow {
+      0% { opacity: 0; transform: scaleX(0); }
+      100% { opacity: 1; transform: scaleX(1); }
+    }
+
+    @keyframes arrowDrop {
+      0% { opacity: 0; transform: translate(-50%, -26px); }
+      100% { opacity: 1; transform: translate(-50%, 0); }
+    }
+
+    .quartile-line {
+      animation: growDown 0.8s ease forwards;
+      transform-origin: top;
+    }
+
+    .quartile-badge {
+      animation: badgeBounce 0.7s ease forwards;
+    }
+
+    .quartile-pulse {
+      animation: softPulse 1.15s ease-in-out infinite;
+    }
+
+    .quartile-glow {
+      animation: slideGlow 0.7s ease forwards;
+      transform-origin: left;
+    }
+
+    .quartile-arrow {
+      animation: arrowDrop 0.65s ease forwards;
+    }
+  </style>
 </head>
 <body>
   <div id="root"></div>
@@ -559,36 +627,88 @@
             {step >= 2 && (
               <div className="mt-5 space-y-4">
                 <div className="rounded-[1.75rem] border-2 border-dashed border-slate-300 bg-slate-50 p-4">
-                  <p className="text-sm font-bold text-slate-800">Animasi pembagian kuartil</p>
-                  <div className="relative mt-6 rounded-3xl bg-white p-6 shadow-inner">
-                    <div className="absolute left-6 right-6 top-1/2 h-1 -translate-y-1/2 rounded-full bg-slate-300" />
+                  <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                    <p className="text-sm font-bold text-slate-800">Animasi pembagian kuartil</p>
+                    <p className="text-xs font-semibold text-slate-500">Muncul bertahap: Q1 → Q2 → Q3</p>
+                  </div>
+
+                  <div className="relative mt-10 overflow-visible rounded-3xl bg-white px-4 pb-8 pt-14 shadow-inner sm:px-6">
+                    <div className="absolute left-6 right-6 top-[56%] h-1 -translate-y-1/2 rounded-full bg-slate-300" />
+
+                    {step >= 2 && <div className="quartile-glow absolute left-[7%] top-[56%] h-3 w-[37%] -translate-y-1/2 rounded-full bg-purple-200/80" />}
+                    {step >= 3 && <div className="quartile-glow absolute left-[44%] top-[56%] h-3 w-[12%] -translate-y-1/2 rounded-full bg-blue-200/80" />}
+                    {step >= 4 && <div className="quartile-glow absolute left-[56%] top-[56%] h-3 w-[37%] -translate-y-1/2 rounded-full bg-green-200/80" />}
+
                     <div className="relative grid grid-cols-10 gap-2">
-                      {correctSorted.map((num, index) => (
-                        <div key={`${num}-${index}`} className="flex flex-col items-center">
-                          <div className="z-10 rounded-2xl bg-gradient-to-r from-fuchsia-400 to-pink-400 px-2 py-3 text-center text-sm font-black text-white shadow">
-                            {num}
+                      {correctSorted.map((num, index) => {
+                        const activeQ1 = step >= 2 && index === 2;
+                        const activeQ2 = step >= 3 && (index === 4 || index === 5);
+                        const activeQ3 = step >= 4 && index === 7;
+                        return (
+                          <div key={`${num}-${index}`} className="flex flex-col items-center gap-2">
+                            <div
+                              className={`z-10 rounded-2xl px-2 py-3 text-center text-sm font-black text-white shadow transition ${
+                                activeQ1
+                                  ? 'quartile-pulse bg-gradient-to-r from-purple-500 to-fuchsia-500'
+                                  : activeQ2
+                                  ? 'quartile-pulse bg-gradient-to-r from-blue-500 to-sky-500'
+                                  : activeQ3
+                                  ? 'quartile-pulse bg-gradient-to-r from-green-500 to-emerald-500'
+                                  : 'bg-gradient-to-r from-fuchsia-400 to-pink-400'
+                              }`}
+                            >
+                              {num}
+                            </div>
+                            <div className="text-[10px] font-bold text-slate-400">data {index + 1}</div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
-                    {step >= 2 && <div className="pointer-events-none absolute left-[25%] top-2 h-[78%] w-1 -translate-x-1/2 animate-pulse rounded-full bg-purple-500" />}
-                    {step >= 3 && <div className="pointer-events-none absolute left-[50%] top-2 h-[78%] w-1 -translate-x-1/2 animate-pulse rounded-full bg-blue-500" />}
-                    {step >= 4 && <div className="pointer-events-none absolute left-[75%] top-2 h-[78%] w-1 -translate-x-1/2 animate-pulse rounded-full bg-green-500" />}
+
+                    {step >= 2 && (
+                      <>
+                        <div className="quartile-arrow pointer-events-none absolute left-[28%] top-4 text-2xl">⬇️</div>
+                        <div className="quartile-line pointer-events-none absolute left-[28%] top-10 w-1 -translate-x-1/2 rounded-full bg-purple-500" />
+                        <div className="quartile-badge pointer-events-none absolute left-[28%] top-0 rounded-full bg-purple-100 px-3 py-1 text-xs font-black text-purple-800 shadow">
+                          Q1 = nilai tengah bagian bawah
+                        </div>
+                      </>
+                    )}
+
+                    {step >= 3 && (
+                      <>
+                        <div className="quartile-arrow pointer-events-none absolute left-[50%] top-4 text-2xl">⬇️</div>
+                        <div className="quartile-line pointer-events-none absolute left-[50%] top-10 w-1 -translate-x-1/2 rounded-full bg-blue-500" />
+                        <div className="quartile-badge pointer-events-none absolute left-[50%] top-0 rounded-full bg-blue-100 px-3 py-1 text-xs font-black text-blue-800 shadow">
+                          Q2 = median
+                        </div>
+                      </>
+                    )}
+
+                    {step >= 4 && (
+                      <>
+                        <div className="quartile-arrow pointer-events-none absolute left-[78%] top-4 text-2xl">⬇️</div>
+                        <div className="quartile-line pointer-events-none absolute left-[78%] top-10 w-1 -translate-x-1/2 rounded-full bg-green-500" />
+                        <div className="quartile-badge pointer-events-none absolute left-[78%] top-0 rounded-full bg-green-100 px-3 py-1 text-xs font-black text-green-800 shadow">
+                          Q3 = nilai tengah bagian atas
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <div className="mt-4 grid gap-3 md:grid-cols-3">
-                    {step >= 3 ? (
-                      <button onClick={() => showQuartileInfo('q1')} className="animate-pulse rounded-2xl bg-purple-200 p-3 text-sm font-bold text-purple-900 shadow">Q1 = {q1}</button>
+                    {step >= 2 ? (
+                      <button onClick={() => showQuartileInfo('q1')} className="rounded-2xl bg-purple-200 p-3 text-sm font-bold text-purple-900 shadow transition hover:scale-[1.02]">Q1 = {q1}</button>
                     ) : (
                       <div className="rounded-2xl bg-slate-200 p-3 text-sm font-bold text-slate-500 shadow">Q1 = ?</div>
                     )}
-                    {step >= 4 ? (
-                      <button onClick={() => showQuartileInfo('q2')} className="animate-pulse rounded-2xl bg-blue-200 p-3 text-sm font-bold text-blue-900 shadow">Q2 = {q2}</button>
+                    {step >= 3 ? (
+                      <button onClick={() => showQuartileInfo('q2')} className="rounded-2xl bg-blue-200 p-3 text-sm font-bold text-blue-900 shadow transition hover:scale-[1.02]">Q2 = {q2}</button>
                     ) : (
                       <div className="rounded-2xl bg-slate-200 p-3 text-sm font-bold text-slate-500 shadow">Q2 = ?</div>
                     )}
-                    {step >= 5 ? (
-                      <button onClick={() => showQuartileInfo('q3')} className="animate-pulse rounded-2xl bg-green-200 p-3 text-sm font-bold text-green-900 shadow">Q3 = {q3}</button>
+                    {step >= 4 ? (
+                      <button onClick={() => showQuartileInfo('q3')} className="rounded-2xl bg-green-200 p-3 text-sm font-bold text-green-900 shadow transition hover:scale-[1.02]">Q3 = {q3}</button>
                     ) : (
                       <div className="rounded-2xl bg-slate-200 p-3 text-sm font-bold text-slate-500 shadow">Q3 = ?</div>
                     )}
@@ -601,7 +721,7 @@
                   <div className="rounded-2xl bg-white p-4 shadow">
                     <p className="font-bold text-slate-800">Apa yang terjadi?</p>
                     <p className="mt-2 text-sm leading-6 text-slate-700">
-                      Data dibagi menjadi 4 bagian sama banyak. Kuartil pertama ada di bagian bawah, kuartil kedua adalah median, dan kuartil ketiga ada di bagian atas.
+                      Setelah data diurutkan, Q1 menunjukkan tengah bagian bawah, Q2 menunjukkan tengah seluruh data, dan Q3 menunjukkan tengah bagian atas. Animasi garis membantu siswa melihat posisi kuartil, bukan hanya menghafal rumus.
                     </p>
                     <QuartileFormulaDisplay />
                   </div>
@@ -672,9 +792,38 @@
       const [checked, setChecked] = useState(false);
       const [passed, setPassed] = useState(null);
       const [score, setScore] = useState(0);
+      const [result, setResult] = useState(null);
 
       const assessmentModeDetails = useMemo(() => getModeDetails(assessment.modeQuestion), [assessment]);
       const assessmentQuartileDetails = useMemo(() => getQuartileDetails(assessment.quartileQuestion), [assessment]);
+
+      function inputStyle(isCorrect) {
+        if (!checked) return 'border-slate-300 bg-white';
+        return isCorrect ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50';
+      }
+
+      function ResultBadge({ ok }) {
+        if (!checked) return null;
+        return ok ? (
+          <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-black text-green-700">✓ Benar</span>
+        ) : (
+          <span className="rounded-full bg-red-100 px-3 py-1 text-xs font-black text-red-700">✗ Salah</span>
+        );
+      }
+
+      function AnswerFeedback({ label, userAnswer, correctAnswer, ok }) {
+        if (!checked) return null;
+        return (
+          <div className={`mt-2 rounded-xl p-3 text-sm ${ok ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+              <p className="font-bold">{label}: {ok ? 'jawabanmu benar' : 'jawabanmu salah'}</p>
+              <ResultBadge ok={ok} />
+            </div>
+            <p className="mt-1">Jawaban siswa: <b>{userAnswer === '' ? 'kosong' : userAnswer}</b></p>
+            {!ok && <p>Jawaban yang benar: <b>{correctAnswer}</b></p>}
+          </div>
+        );
+      }
 
       function checkQuiz() {
         const expectedMode = Number(assessmentModeDetails.modeValue.toFixed(1));
@@ -687,6 +836,17 @@
         setScore(totalScore);
         setChecked(true);
         setPassed(modeOk && q1Ok && q2Ok && q3Ok);
+        setResult({
+          modeOk,
+          q1Ok,
+          q2Ok,
+          q3Ok,
+          expectedMode,
+          q1: assessmentQuartileDetails.q1,
+          q2: assessmentQuartileDetails.q2,
+          q3: assessmentQuartileDetails.q3,
+          sorted: assessmentQuartileDetails.sorted,
+        });
       }
 
       return (
@@ -704,8 +864,11 @@
           </div>
 
           <div className="mt-5 space-y-5">
-            <div className="rounded-2xl bg-white p-4 shadow">
-              <p className="font-bold text-slate-800">Soal 1: Modus data berkelompok</p>
+            <div className={`rounded-2xl p-4 shadow ${checked && result?.modeOk ? 'bg-green-50 ring-2 ring-green-300' : checked ? 'bg-red-50 ring-2 ring-red-300' : 'bg-white'}`}>
+              <div className="flex items-center justify-between gap-2">
+                <p className="font-bold text-slate-800">Soal 1: Modus data berkelompok</p>
+                {checked && <ResultBadge ok={result?.modeOk} />}
+              </div>
               <div className="mt-3 overflow-hidden rounded-2xl border border-slate-200">
                 <table className="min-w-full text-left text-sm">
                   <thead className="bg-slate-50 text-slate-700">
@@ -716,7 +879,7 @@
                   </thead>
                   <tbody>
                     {assessment.modeQuestion.data.map((row, index) => (
-                      <tr key={index} className="border-t border-slate-200 bg-white">
+                      <tr key={index} className={`border-t border-slate-200 ${checked && index === assessment.modeQuestion.modalIndex ? 'bg-yellow-100 font-bold' : 'bg-white'}`}>
                         <td className="px-4 py-3">{row.lower}–{row.upper}</td>
                         <td className="px-4 py-3 font-semibold">{row.freq}</td>
                       </tr>
@@ -729,10 +892,23 @@
                 <input
                   value={modeAnswerInput}
                   onChange={(e) => setModeAnswerInput(e.target.value)}
-                  className="w-full rounded-xl border border-slate-300 px-3 py-2"
+                  className={`w-full rounded-xl border px-3 py-2 ${inputStyle(result?.modeOk)}`}
                   placeholder="Masukkan nilai modus"
                 />
               </div>
+              {checked && result && (
+                <>
+                  <AnswerFeedback label="Modus" userAnswer={modeAnswerInput} correctAnswer={result.expectedMode.toFixed(1)} ok={result.modeOk} />
+                  {!result.modeOk && (
+                    <div className="mt-3 rounded-xl bg-white p-3 text-sm text-slate-700 shadow-inner">
+                      <p className="font-bold text-slate-800">Cara jawaban benar:</p>
+                      <p>Kelas modus adalah <b>{assessmentModeDetails.modalClass.lower}–{assessmentModeDetails.modalClass.upper}</b> karena frekuensinya paling besar.</p>
+                      <p>Tepi bawah = <b>{assessmentModeDetails.lowerBoundary}</b>, selisih kiri = <b>{assessmentModeDetails.leftDifference}</b>, selisih kanan = <b>{assessmentModeDetails.rightDifference}</b>, panjang kelas = <b>{assessmentModeDetails.classWidth}</b>.</p>
+                      <p>Nilai modus yang benar adalah <b>{result.expectedMode.toFixed(1)}</b>.</p>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
 
             <div className="rounded-2xl bg-white p-4 shadow">
@@ -741,33 +917,51 @@
               <div className="mt-3 rounded-2xl bg-slate-50 p-3 text-sm text-slate-800">
                 {assessment.quartileQuestion.join(', ')}
               </div>
+              {checked && result && (
+                <div className="mt-3 rounded-2xl bg-blue-50 p-3 text-sm text-blue-800">
+                  <p className="font-bold">Data yang sudah diurutkan:</p>
+                  <p>{result.sorted.join(', ')}</p>
+                </div>
+              )}
               <div className="mt-4 grid gap-3 md:grid-cols-3">
-                <div>
-                  <label className="mb-1 block text-sm font-bold text-slate-700">Nilai Q1</label>
+                <div className={`rounded-2xl p-3 ${checked && result?.q1Ok ? 'bg-green-50 ring-2 ring-green-300' : checked ? 'bg-red-50 ring-2 ring-red-300' : 'bg-slate-50'}`}>
+                  <div className="mb-1 flex items-center justify-between gap-2">
+                    <label className="block text-sm font-bold text-slate-700">Nilai Q1</label>
+                    {checked && <ResultBadge ok={result?.q1Ok} />}
+                  </div>
                   <input
                     value={q1Input}
                     onChange={(e) => setQ1Input(e.target.value)}
-                    className="w-full rounded-xl border border-slate-300 px-3 py-2"
+                    className={`w-full rounded-xl border px-3 py-2 ${inputStyle(result?.q1Ok)}`}
                     placeholder="Masukkan Q1"
                   />
+                  {checked && result && <AnswerFeedback label="Q1" userAnswer={q1Input} correctAnswer={result.q1} ok={result.q1Ok} />}
                 </div>
-                <div>
-                  <label className="mb-1 block text-sm font-bold text-slate-700">Nilai Q2</label>
+                <div className={`rounded-2xl p-3 ${checked && result?.q2Ok ? 'bg-green-50 ring-2 ring-green-300' : checked ? 'bg-red-50 ring-2 ring-red-300' : 'bg-slate-50'}`}>
+                  <div className="mb-1 flex items-center justify-between gap-2">
+                    <label className="block text-sm font-bold text-slate-700">Nilai Q2</label>
+                    {checked && <ResultBadge ok={result?.q2Ok} />}
+                  </div>
                   <input
                     value={q2Input}
                     onChange={(e) => setQ2Input(e.target.value)}
-                    className="w-full rounded-xl border border-slate-300 px-3 py-2"
+                    className={`w-full rounded-xl border px-3 py-2 ${inputStyle(result?.q2Ok)}`}
                     placeholder="Masukkan Q2"
                   />
+                  {checked && result && <AnswerFeedback label="Q2" userAnswer={q2Input} correctAnswer={result.q2} ok={result.q2Ok} />}
                 </div>
-                <div>
-                  <label className="mb-1 block text-sm font-bold text-slate-700">Nilai Q3</label>
+                <div className={`rounded-2xl p-3 ${checked && result?.q3Ok ? 'bg-green-50 ring-2 ring-green-300' : checked ? 'bg-red-50 ring-2 ring-red-300' : 'bg-slate-50'}`}>
+                  <div className="mb-1 flex items-center justify-between gap-2">
+                    <label className="block text-sm font-bold text-slate-700">Nilai Q3</label>
+                    {checked && <ResultBadge ok={result?.q3Ok} />}
+                  </div>
                   <input
                     value={q3Input}
                     onChange={(e) => setQ3Input(e.target.value)}
-                    className="w-full rounded-xl border border-slate-300 px-3 py-2"
+                    className={`w-full rounded-xl border px-3 py-2 ${inputStyle(result?.q3Ok)}`}
                     placeholder="Masukkan Q3"
                   />
+                  {checked && result && <AnswerFeedback label="Q3" userAnswer={q3Input} correctAnswer={result.q3} ok={result.q3Ok} />}
                 </div>
               </div>
             </div>
@@ -782,15 +976,15 @@
 
           {checked && passed === true && (
             <div className="mt-3 rounded-xl bg-green-100 p-3 text-green-700">
-              <p className="font-bold">Benar! Skormu {score}/100.</p>
-              <p className="mt-1 text-sm">Kamu berhasil menyelesaikan soal baru dari dua misi.</p>
+              <p className="font-bold">Benar semua! Skormu {score}/100.</p>
+              <p className="mt-1 text-sm">Semua jawaban sudah tepat.</p>
             </div>
           )}
 
-          {checked && passed === false && (
+          {checked && passed === false && result && (
             <div className="mt-3 rounded-xl bg-red-100 p-3 text-red-700">
-              <p className="font-bold">Masih ada jawaban yang salah. Skormu {score}/100.</p>
-              <p className="mt-1 text-sm">Setiap jawaban benar bernilai 25 poin. Baca lagi materi singkat atau ulangi simulasi, lalu coba tantangannya lagi.</p>
+              <p className="font-bold">Skormu {score}/100. Bagian yang salah sudah diberi warna merah.</p>
+              <p className="mt-1 text-sm">Jawaban yang benar langsung ditampilkan di bawah jawaban siswa agar siswa bisa memperbaiki pemahamannya.</p>
             </div>
           )}
 
@@ -827,7 +1021,7 @@
               </div>
             </div>
             <div className="mx-auto inline-flex rounded-full bg-gradient-to-r from-yellow-200 via-pink-200 to-sky-200 px-6 py-3 shadow-lg">
-              <h1 className="text-3xl font-black tracking-wide text-slate-800 md:text-5xl">STATISTIKA INTERAKTIF</h1>
+              <h1 className="text-3xl font-black tracking-wide text-slate-800 md:text-5xl">STATISTIKA INTERAKTIF: MATERI MODUS DAN KUARTIL</h1>
             </div>
 
             <p className="mt-4 text-lg font-bold text-slate-700 md:text-2xl">Pahami Data, Bukan Hafal Rumus!</p>
