@@ -775,6 +775,66 @@
                 <p><b>Jika jumlah data ganjil,</b> Q2 adalah satu nilai tepat di tengah. Bagian bawah dan atas dicari kembali nilai tengahnya.</p>
               </div>
             </div>
+
+            <div className="rounded-[1.75rem] border-2 border-sky-100 bg-gradient-to-br from-sky-50 via-white to-indigo-50 p-5 shadow-lg">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-lg font-black text-slate-800">🎥 Video Pembelajaran</p>
+                  <p className="mt-1 text-sm text-slate-600">Tonton video berikut sebagai bahan belajar tambahan sebelum mengerjakan game dan tantangan.</p>
+                </div>
+                <span className="w-fit rounded-full bg-sky-100 px-4 py-2 text-xs font-black text-sky-700">Bahan Materi</span>
+              </div>
+
+              <div className="mt-4 grid gap-4 lg:grid-cols-3">
+                <div className="rounded-2xl bg-white p-3 shadow-md">
+                  <p className="mb-2 font-bold text-slate-800">Video 1</p>
+                  <div className="aspect-video overflow-hidden rounded-xl bg-slate-200">
+                    <iframe
+                      className="h-full w-full"
+                      loading="lazy"
+                      src="https://www.youtube-nocookie.com/embed/DKi6e7G7QNI?rel=0&modestbranding=1"
+                      title="Video Pembelajaran Statistika 1"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen>
+                    </iframe>
+                  </div>
+                  <a className="mt-3 inline-block rounded-full bg-red-500 px-4 py-2 text-xs font-bold text-white shadow hover:bg-red-600" href="https://youtu.be/DKi6e7G7QNI?si=QAbxBr1Nq22ulTE6" target="_blank" rel="noreferrer">Buka di YouTube</a>
+                </div>
+
+                <div className="rounded-2xl bg-white p-3 shadow-md">
+                  <p className="mb-2 font-bold text-slate-800">Video 2</p>
+                  <div className="aspect-video overflow-hidden rounded-xl bg-slate-200">
+                    <iframe
+                      className="h-full w-full"
+                      loading="lazy"
+                      src="https://www.youtube-nocookie.com/embed/LXVg1WnoeGk?rel=0&modestbranding=1"
+                      title="Video Pembelajaran Statistika 2"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen>
+                    </iframe>
+                  </div>
+                  <a className="mt-3 inline-block rounded-full bg-red-500 px-4 py-2 text-xs font-bold text-white shadow hover:bg-red-600" href="https://youtu.be/LXVg1WnoeGk?si=_JBUhb0xU5NYW8Xy" target="_blank" rel="noreferrer">Buka di YouTube</a>
+                </div>
+
+                <div className="rounded-2xl bg-white p-3 shadow-md">
+                  <p className="mb-2 font-bold text-slate-800">Video 3</p>
+                  <div className="aspect-video overflow-hidden rounded-xl bg-slate-200">
+                    <iframe
+                      className="h-full w-full"
+                      loading="lazy"
+                      src="https://www.youtube-nocookie.com/embed/ThuZ5nUv4Ek?rel=0&modestbranding=1"
+                      title="Video Pembelajaran Statistika 3"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen>
+                    </iframe>
+                  </div>
+                  <a className="mt-3 inline-block rounded-full bg-red-500 px-4 py-2 text-xs font-bold text-white shadow hover:bg-red-600" href="https://youtu.be/ThuZ5nUv4Ek?si=TynbAmwX5P8OM-hX" target="_blank" rel="noreferrer">Buka di YouTube</a>
+                </div>
+              </div>
+            </div>
           </div>
           <button onClick={onBack} className="mt-5 rounded-xl bg-slate-700 px-4 py-2 text-white">
             Kembali
