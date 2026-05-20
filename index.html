@@ -23,9 +23,7 @@
       animation: dropLine 0.65s ease forwards;
     }
 
-    .fade-pop {
-      animation: fadePop 0.55s ease forwards;
-    }
+    
 
 
     @keyframes growDown {
@@ -360,7 +358,7 @@
               <div>
                 <h2 className="text-2xl font-black text-slate-800">🎮 Level 1: Petualangan Modus</h2>
                 <p className="mt-1 text-sm text-slate-700">
-                  Klik batang dengan frekuensi paling besar. Ingat, menentukan modus tidak berhenti di kelas modus saja. Nilai modus tetap harus dihitung agar tidak terjadi miskonsepsi.
+                  Klik batang dengan frekuensi paling besar. 
                 </p>
               </div>
               <div className="rounded-2xl bg-white px-4 py-3 text-sm font-bold text-slate-700 shadow">Misi 1</div>
@@ -845,6 +843,7 @@
 
     function TantanganQuiz({ onBack }) {
       const [assessment] = useState(generateFinalAssessment());
+      const [studentName,setStudentName]=useState('');
       const [modeAnswerInput, setModeAnswerInput] = useState('');
       const [q1Input, setQ1Input] = useState('');
       const [q2Input, setQ2Input] = useState('');
@@ -914,7 +913,7 @@
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>
               <h2 className="text-2xl font-black text-slate-800">Tantangan</h2>
-              <p className="mt-2 text-sm text-slate-700">Kerjakan soal baru dari dua materi berikut.</p>
+              <p className="mt-2 text-sm text-slate-700">Kerjakan soal baru dari dua materi berikut.</p><input disabled={checked} value={studentName} onChange={(e)=>setStudentName(e.target.value)} className="mt-3 w-full rounded-xl border p-2" disabled={checked} placeholder="Masukkan nama siswa" />
             </div>
             <div className="rounded-3xl bg-gradient-to-r from-yellow-300 to-orange-400 px-5 py-4 text-center shadow-lg">
               <div className="text-xs font-black uppercase tracking-wide text-slate-700">Skor</div>
@@ -953,7 +952,7 @@
                   value={modeAnswerInput}
                   onChange={(e) => setModeAnswerInput(e.target.value)}
                   className={`w-full rounded-xl border px-3 py-2 ${inputStyle(result?.modeOk)}`}
-                  placeholder="Masukkan nilai modus"
+                  disabled={checked} placeholder="Masukkan nilai modus"
                 />
               </div>
               {checked && result && (
@@ -993,7 +992,7 @@
                     value={q1Input}
                     onChange={(e) => setQ1Input(e.target.value)}
                     className={`w-full rounded-xl border px-3 py-2 ${inputStyle(result?.q1Ok)}`}
-                    placeholder="Masukkan Q1"
+                    disabled={checked} placeholder="Masukkan Q1"
                   />
                   {checked && result && <AnswerFeedback label="Q1" userAnswer={q1Input} correctAnswer={result.q1} ok={result.q1Ok} />}
                 </div>
@@ -1006,7 +1005,7 @@
                     value={q2Input}
                     onChange={(e) => setQ2Input(e.target.value)}
                     className={`w-full rounded-xl border px-3 py-2 ${inputStyle(result?.q2Ok)}`}
-                    placeholder="Masukkan Q2"
+                    disabled={checked} placeholder="Masukkan Q2"
                   />
                   {checked && result && <AnswerFeedback label="Q2" userAnswer={q2Input} correctAnswer={result.q2} ok={result.q2Ok} />}
                 </div>
@@ -1019,7 +1018,7 @@
                     value={q3Input}
                     onChange={(e) => setQ3Input(e.target.value)}
                     className={`w-full rounded-xl border px-3 py-2 ${inputStyle(result?.q3Ok)}`}
-                    placeholder="Masukkan Q3"
+                    disabled={checked} placeholder="Masukkan Q3"
                   />
                   {checked && result && <AnswerFeedback label="Q3" userAnswer={q3Input} correctAnswer={result.q3} ok={result.q3Ok} />}
                 </div>
@@ -1028,8 +1027,8 @@
           </div>
 
           <button
-            onClick={checkQuiz}
-            className="mt-4 w-full rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-3 font-bold text-white shadow-lg transition hover:scale-[1.02]"
+            onClick={checkQuiz} disabled={checked || !studentName.trim()}
+            className="mt-4 w-full rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-3 font-bold text-white shadow-lg transition hover:scale-[1.02] disabled:opacity-50"
           >
             Cek Hasil Tantangan
           </button>
@@ -1043,8 +1042,8 @@
 
           {checked && passed === false && result && (
             <div className="mt-3 rounded-xl bg-red-100 p-3 text-red-700">
-              <p className="font-bold">Skormu {score}/100. Bagian yang salah sudah diberi warna merah.</p>
-              <p className="mt-1 text-sm">Jawaban yang benar langsung ditampilkan di bawah jawaban siswa agar siswa bisa memperbaiki pemahamannya.</p>
+              <p className="font-bold">Skormu {score}/100. </p>
+              <p className="mt-1 text-sm"></p>
             </div>
           )}
 
@@ -1084,7 +1083,7 @@
               <h1 className="text-3xl font-black tracking-wide text-slate-800 md:text-5xl">STATISTIKA INTERAKTIF: MATERI MODUS DAN KUARTIL</h1>
             </div>
 
-            <p className="mt-4 text-lg font-bold text-slate-700 md:text-2xl">Pahami Data, Bukan Hafal Rumus!</p>
+            
             <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-600 md:text-base">
               Belajar modus dan kuartil dengan visual, animasi, dan tantangan yang lebih seru.
             </p>
